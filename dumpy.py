@@ -2,6 +2,13 @@ from ctypes import *
 from random import random 
 from typing import Type
 
+
+#    TODO: 
+# - Implement 
+#
+# 
+# 
+
 lib = CDLL('./matrix.so')
 
 class Matrix(Structure):
@@ -74,13 +81,10 @@ class dumpy:
          
     def __add__(self, B):
         if isinstance(B, dumpy):
-            print('a')
             C = matadd(self.Mat, B.Mat)
         elif isinstance(B, int) or isinstance(B, float):
-            print('b')
             C = floatadd(self.Mat, B)
         elif isinstance(B, Matrix):  
-            print('c')
             C = matadd(self.mat, B)  
         else:  
             raise TypeError
@@ -92,7 +96,7 @@ class dumpy:
 
     def __mul__(self, B):
         if isinstance(B, dumpy):
-            C = matmul(self.Mat, B)
+            C = matmul(self.Mat, B.Mat)
         elif isinstance(B, int) or isinstance(B, float):
             C = floatmul(self.Mat, B)
         elif isinstance(B, Matrix):  
