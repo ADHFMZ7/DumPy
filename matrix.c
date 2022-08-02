@@ -18,12 +18,12 @@
 */
 
 
-
 /////////////////////////////
 ////    Constructors    ////
 ///////////////////////////
 
-Matrix* create(const int N)
+
+Matrix* create(int N)
 {
     Matrix* matrix = malloc(sizeof(Matrix));
     matrix->N = N;
@@ -56,9 +56,11 @@ Matrix* eye(const int N)
     return A;
 }
 
+
 /////////////////////////////
 ////   Math Functions   ////
 ///////////////////////////
+
 
  Matrix* matmul(Matrix* A, Matrix* B) 
  {
@@ -81,6 +83,60 @@ Matrix* eye(const int N)
     return C;
  }
 
+
+ Matrix* floatmul(Matrix* A, float B)
+ {
+    Matrix* C = create(A->N);
+    for (int i = 0; i < A->N; i++)
+    {
+        for (int j = 0; j < A->N; j++)
+        {
+            C->entries[i][j] = 
+            A->entries[i][j] * B;
+        }
+    }
+    return C;
+ }
+
+
+ Matrix* matadd(Matrix* A, Matrix* B)
+ {
+    Matrix* C = create(A->N);
+    for (int i = 0; i < A->N; i++)
+    {
+        for (int j = 0; j < A->N; j++)
+        {
+            C->entries[i][j] = 
+            A->entries[i][j] + 
+            B->entries[i][j];
+        }
+    }
+    return C;
+ }
+
+
+ Matrix* floatadd(Matrix* A, float B)
+ {
+    Matrix* C = create(A->N);
+    for (int i = 0; i < A->N; i++)
+    {
+        for (int j = 0; j < A->N; j++)
+        {
+            C->entries[i][j] = 
+            A->entries[i][j] + B;
+        }
+    }
+    return C;
+ }
+
+
+
+
+
+
+
+
+
  void print(Matrix* A)
  {
     for (int i = 0; i < A->N; i++)
@@ -91,5 +147,4 @@ Matrix* eye(const int N)
         }
         printf("\n");
     }
-    printf("\n");
  }

@@ -11,6 +11,9 @@ Matrix* eye(const int N);
 
 
 Matrix* matmul(Matrix* A, Matrix* B);
+Matrix* floatmul(Matrix* A, float B);
+Matrix* matadd(Matrix* A, Matrix* B);
+Matrix* floatadd(Matrix* A, float B);
 
 
 void print(Matrix* A);
