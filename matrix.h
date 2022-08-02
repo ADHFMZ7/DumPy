@@ -9,13 +9,13 @@ typedef struct {
 Matrix* create(const int N);
 Matrix* eye(const int N);
 
-
 Matrix* matmul(Matrix* A, Matrix* B);
 Matrix* floatmul(Matrix* A, float B);
 Matrix* matadd(Matrix* A, Matrix* B);
 Matrix* floatadd(Matrix* A, float B);
 
-
+int getn(Matrix* A);
+float at(Matrix* A, int i, int j);
 void print(Matrix* A);
 
 

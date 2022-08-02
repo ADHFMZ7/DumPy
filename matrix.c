@@ -132,10 +132,15 @@ Matrix* eye(const int N)
 
 
 
+int getn(Matrix* A)
+{
+    return A->N;
+}
 
-
-
-
+float at(Matrix* A, int i, int j)
+{
+    return A->entries[i][j] ;
+}
 
  void print(Matrix* A)
  {
