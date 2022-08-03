@@ -1,6 +1,7 @@
 #include "matrix.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 /*  This matrix library implements a square
     matrix struct and basic operations to
@@ -35,6 +36,20 @@ Matrix* create(int N)
     return matrix;
 }
 
+
+Matrix* randmat(const int N)
+{
+    Matrix* A = create(N);
+    srand(time(NULL));
+    for (int i = 0; i < N; i++)
+    {
+        for (int j = 0 ; j < N; j++)
+        {
+            A->entries[i][j] = ((double)rand()/(double)(RAND_MAX/10));
+        }
+    }
+    return A;
+}
 
 Matrix* eye(const int N)
 {
@@ -142,13 +157,23 @@ float at(Matrix* A, int i, int j)
     return A->entries[i][j] ;
 }
 
+void set(Matrix* A, int i, int j, float val)
+{
+    printf("%f", val);
+    if (i >= A->N || j >= A->N)
+    {
+        return;
+    }
+    A->entries[i][j] = val;
+}
+
  void print(Matrix* A)
  {
     for (int i = 0; i < A->N; i++)
     {
         for (int j = 0; j < A->N; j++)
         {
-            printf("%.1f ", A->entries[i][j]);
+            printf("%.2f ", A->entries[i][j]);
         }
         printf("\n");
     }

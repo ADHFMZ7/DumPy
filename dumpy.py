@@ -22,13 +22,17 @@ class Matrix(Structure):
         lib.print(self)
         return ''
     
-eye = lib.eye
-eye.argtypes = [c_int]    
-eye.restype = POINTER(Matrix)
-
 create = lib.create
 create.argtypes = [c_int]
 create.restype = POINTER(Matrix)
+
+randmat = lib.randmat
+randmat.argtypes = [c_int]
+randmat.restype = POINTER(Matrix)
+
+eye = lib.eye
+eye.argtypes = [c_int]    
+eye.restype = POINTER(Matrix)
 
 matmul = lib.matmul
 matmul.argtypes = [POINTER(Matrix), POINTER(Matrix)]
@@ -54,6 +58,9 @@ at = lib.at
 at.argtypes = [POINTER(Matrix), c_int, c_int]
 at.restype = c_float
 
+set = lib.set
+set.argtypes = [POINTER(Matrix), c_int, c_int, c_float]
+
 
 class dumpy:
 
@@ -72,13 +79,26 @@ class dumpy:
         print('\n')
         lib.print(self.Mat)
         return ''
+    
+    # MATMUL OPERATORS 
      
     def __matmul__(self, B):
         if type(B) != type(self):
             raise TypeError
         C = matmul(self.Mat, B.Mat)
         return matrix(C.contents)
-         
+        
+    def __rmatmul__(self, B):
+        if not isinstance(B, dumpy):
+            raise TypeError
+        C = matmul(B.Mat, self.Mat) 
+        return matrix(C.contents)
+    
+    def __imatmul__(self, B):
+        return self @ B
+    
+    # ADDITION OPERATORS 
+    
     def __add__(self, B):
         if isinstance(B, dumpy):
             C = matadd(self.Mat, B.Mat)
@@ -93,6 +113,11 @@ class dumpy:
     def __radd__(self, B):
         C = self + B 
         return C
+    
+    def __iadd__(self, B):
+        return self + B
+
+    # MULTIPLICATION OPERATORS
 
     def __mul__(self, B):
         if isinstance(B, dumpy):
@@ -104,17 +129,43 @@ class dumpy:
         else:
             raise TypeError
         return matrix(C.contents)
-    
+  
+    def __rmul__(self, B):
+        C = B * self
+        return C
+   
+    def __imul__(self, B):
+        return self * B
+     
+    # ACCESS OPERATORS 
+      
     def __len__(self):
         return getn(self.mat) ** 2
 
+    def __setitem__(self, pos, val):
+        i, j = pos
+        try:
+            val = float(val)
+        except:
+            raise TypeError
+        if max(i, j) >= self.N:
+            raise IndexError
+        set(self.Mat, i, j, val)
+    
+    def __getitem__(self, pos):
+        i, j = pos
+        if max(i, j) >= self.N:
+            raise IndexError
+        return at(self.Mat, i, j)
 
+    
 
 def matrix(Mat):
     C = dumpy(getn(Mat), mat=Mat)
     return C
     
-    
+def rand(N):
+    return matrix(randmat(N).contents)
     
 if __name__ == '__main__': 
     # A = Matrix()
