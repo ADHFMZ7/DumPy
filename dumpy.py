@@ -110,8 +110,7 @@ class dumpy:
         return matrix(C.contents)
      
     def __radd__(self, B):
-        C = self + B 
-        return C
+        return self + B 
     
     def __iadd__(self, B):
         return self + B
@@ -176,4 +175,5 @@ if __name__ == '__main__':
     
     
     A = [[random() for i in range(10)] for j in range(10)]
-    m = Matrix(10, A)
+    print(A)
+    #m = Matrix(10, A)
