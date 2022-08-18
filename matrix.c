@@ -71,11 +71,24 @@ Matrix* eye(const int N)
     return A;
 }
 
+Matrix* load(float** new, const int N)
+{
+    Matrix* matrix = malloc(sizeof(Matrix));
+    matrix->N = N;
+    matrix->entries = new;
+    return matrix;
+}
+
 
 /////////////////////////////
 ////   Math Functions   ////
 ///////////////////////////
 
+
+Matrix* transpose(Matrix* A, Matrix* B)
+{
+    
+}
 
  Matrix* matmul(Matrix* A, Matrix* B) 
  {
@@ -169,6 +182,7 @@ void set(Matrix* A, int i, int j, float val)
 
  void print(Matrix* A)
  {
+    printf("this is the c print: \n");
     for (int i = 0; i < A->N; i++)
     {
         for (int j = 0; j < A->N; j++)

@@ -5,8 +5,6 @@ from random import random
 #    TODO: 
 # - Implement 
 #
-# 
-# 
 
 lib = CDLL('./matrix.so')
 
@@ -32,6 +30,10 @@ randmat.restype = POINTER(Matrix)
 eye = lib.eye
 eye.argtypes = [c_int]    
 eye.restype = POINTER(Matrix)
+
+load = lib.load
+load.argtypes = [POINTER(POINTER(c_float))]
+load.restype = POINTER(Matrix)
 
 matmul = lib.matmul
 matmul.argtypes = [POINTER(Matrix), POINTER(Matrix)]
@@ -159,8 +161,8 @@ class dumpy:
     
 
 def matrix(Mat):
-    C = dumpy(getn(Mat), mat=Mat)
-    return C
+    return dumpy(getn(Mat), mat=Mat)
+   
     
 def rand(N):
     return matrix(randmat(N).contents)
@@ -174,6 +176,7 @@ if __name__ == '__main__':
     # print(A@B)
     
     
-    A = [[random() for i in range(10)] for j in range(10)]
-    print(A)
+    # A = [[random() for i in range(10)] for j in range(10)]
+    # print(A)
     #m = Matrix(10, A)
+    pass

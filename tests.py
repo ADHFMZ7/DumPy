@@ -2,7 +2,7 @@ import dumpy as dp
 import numpy as np
 from time import perf_counter as pf
 
-SIZE = 100
+SIZE = 10
 
 
 dpstart = pf()
@@ -30,21 +30,19 @@ for i, row in enumerate(D):
 
 
 npstart = pf()
-C @ D
+E = C @ D
 npend = pf()
 
 print(f"np time to multiply: {npend - npstart}")
-
 dpstart = pf()
-A @ B
+F = A @ B
 dpend = pf()
 
-#print(E)
+print(E)
 
 #print(E)
 
-#print(F)
+print(F)
 
 print(f"dp time to multiply: {dpend - dpstart}")
-
 

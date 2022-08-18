@@ -1,4 +1,6 @@
 #include "matrix.h"
+#include <stdlib.h>
+#include <stdio.h>
 
 int main()
 {
@@ -14,13 +16,12 @@ int main()
     B->entries[1][0] = 7;
     B->entries[1][1] = 8;
 
-    Matrix* C = eye(2);
-    Matrix* D = matmul(A, B);
+    Matrix* D = randmat(16);
+    Matrix* E = randmat(16);
 
-    print(A);
-    print(B);
-    print(C);
     print(D);
 
-    print(matmul(C, D));
+    print(E);
+
+    print(matmul(D, E));
 }
