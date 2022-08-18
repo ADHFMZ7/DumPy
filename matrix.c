@@ -40,7 +40,6 @@ Matrix* create(int N)
 Matrix* randmat(const int N)
 {
     Matrix* A = create(N);
-    srand(time(NULL));
     for (int i = 0; i < N; i++)
     {
         for (int j = 0 ; j < N; j++)
@@ -85,12 +84,32 @@ Matrix* load(float** new, const int N)
 ///////////////////////////
 
 
-Matrix* transpose(Matrix* A, Matrix* B)
+Matrix* transpose(Matrix* A)
 {
-    
+    if (A->N <= 32)
+    {
+
+    }
+
 }
 
- Matrix* matmul(Matrix* A, Matrix* B) 
+Matrix* naive_transpose(Matrix* A)
+{
+    float temp;
+    for (int i = 0; i < A->N; i++)
+    {
+        for (int j = 0; j < i; j++)
+        {
+            temp = A->entries[i][j];
+            A->entries[i][j] = A->entries[j][i];
+            A->entries[j][i] = temp;
+        }
+    }
+    return A;
+}
+
+
+ Matrix* naive_matmul(Matrix* A, Matrix* B) 
  {
     if (A->N != B->N)
     {
@@ -105,6 +124,29 @@ Matrix* transpose(Matrix* A, Matrix* B)
             for (int k = 0; k < C->N; k++)
             {
                 C->entries[j][i] += A->entries[j][k] * B->entries[k][i];
+            }
+        }
+    }
+    return C;
+ }
+
+
+ Matrix* matmul(Matrix* A, Matrix* B) 
+ {
+    // B = transpose(B);
+    if (A->N != B->N)
+    {
+        return NULL;
+    }
+    Matrix* C = create(A->N);
+
+    for (int i = 0; i < C->N; i++)
+    {
+        for (int j = 0; j < C->N; j++)
+        {
+            for (int k = 0; k < C->N; k++)
+            {
+                C->entries[j][i] += A->entries[j][k] * B->entries[i][k];
             }
         }
     }
