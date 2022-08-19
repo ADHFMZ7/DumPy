@@ -19,4 +19,11 @@ B = dp.rand(100)
 # multiplies A and B and stores the value into C
 C = A @ B
 
+C * 100
+
+C + 10
+
+C @ dp.eye(100)
+
+print(C)
 ```
