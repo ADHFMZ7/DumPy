@@ -9,7 +9,7 @@ Next Steps
 
 # Code Example
 
-```
+```python
 import dumpy as dp
 
 # creates two 100 x 100 sized matrices with random values
