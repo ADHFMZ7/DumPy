@@ -20,11 +20,11 @@ int main()
     B->entries[1][1] = 8;
 
 
-    Matrix* D = randmat(2048);
+    Matrix* D = randmat(4096);
 
     randmat(1000);
 
-    Matrix* E = randmat(2048);
+    Matrix* E = randmat(4096);
 
     t = clock();
     naive_matmul(D, E);
