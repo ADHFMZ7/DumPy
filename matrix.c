@@ -136,7 +136,8 @@ Matrix* naive_transpose(Matrix* A)
 
  Matrix* matmul(Matrix* A, Matrix* B) 
  {
-    // B = transpose(B);
+    // TODO: CHANGE THIS TO EFFICIENT TRANSPOSE
+    B = naive_transpose(B);
     if (A->N != B->N)
     {
         return NULL;
