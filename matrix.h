@@ -12,7 +12,7 @@ Matrix* eye(const int N);
 Matrix* load(float** new, const int N);
 
 
-Matrix* transpose(Matrix* A);
+Matrix* transpose(Matrix* A, int n, int N);
 Matrix* naive_transpose(Matrix* A);
 Matrix* matmul(Matrix* A, Matrix* B);
 Matrix* naive_matmul(Matrix* A, Matrix* B);

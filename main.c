@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include <time.h>
 
+#define SIZE 2048 
+
 int main()
 {
     clock_t t;
@@ -20,20 +22,22 @@ int main()
     B->entries[1][1] = 8;
 
 
-    Matrix* D = randmat(4096);
+    Matrix* D = randmat(SIZE);
 
     randmat(1000);
 
-    Matrix* E = randmat(4096);
+    Matrix* E = randmat(SIZE);
+
+    t = clock();
+    matmul(D, naive_transpose(E));
+    t = clock() - t; 
+    printf("fast done in %f\n", ((double)t)/CLOCKS_PER_SEC);
 
     t = clock();
     naive_matmul(D, E);
     t = clock() - t;
     printf("naive done in %f\n", ((double)t)/CLOCKS_PER_SEC);
 
-    t = clock();
-    matmul(D, naive_transpose(E));
-    t = clock() - t; 
-    printf("fast done in %f\n", ((double)t)/CLOCKS_PER_SEC);
+
 
 }

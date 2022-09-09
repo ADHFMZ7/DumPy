@@ -87,13 +87,22 @@ Matrix* load(float** new, const int N)
 ///////////////////////////
 
 
-Matrix* transpose(Matrix* A)
+Matrix* transpose(Matrix* A, int n, int N)
 {
     if (A->N <= 32)
     {
-
+        return naive_transpose(A);
     }
+    else 
+    {
+        int k = n / 2;
 
+        transpose(A, k, A->N);
+        transpose(A+k, k, A->N);
+        transpose(A + k * N, k, A->N);
+        transpose(A + k * N + k, k, N);
+    }
+    return A;
 }
 
 Matrix* naive_transpose(Matrix* A)
