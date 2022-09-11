@@ -31,11 +31,7 @@ Matrix* create(int N)
 {
     Matrix* matrix = malloc(sizeof(Matrix));
     matrix->N = N;
-    matrix->entries = malloc(sizeof(float*) * N);
-    for (int i = 0; i < N; i++)
-    {
-        matrix->entries[i] = malloc(sizeof(float) * N);
-    }
+    matrix->entries = malloc(N * sizeof(float) * N);
     return matrix;
 }
 
@@ -43,12 +39,9 @@ Matrix* create(int N)
 Matrix* randmat(const int N)
 {
     Matrix* A = create(N);
-    for (int i = 0; i < N; i++)
+    for (int i = 0; i < N*N; i++)
     {
-        for (int j = 0 ; j < N; j++)
-        {
-            A->entries[i][j] = ((double)rand()/(double)(RAND_MAX/10));
-        }
+        A->entries[i] = ((double)rand()/(double)(RAND_MAX/10));
     }
     return A;
 }
@@ -62,18 +55,18 @@ Matrix* eye(const int N)
         {
             if (j == i) 
             {
-                A->entries[i][j] = 1.;
+                A->entries[i * N + j] = 1.;
             }
             else 
             {
-                A->entries[i][j] = 0.;
+                A->entries[i * N + j] = 0.;
             }
         }
     }
     return A;
 }
 
-Matrix* load(float** new, const int N)
+Matrix* load(float* new, const int N)
 {
     Matrix* matrix = malloc(sizeof(Matrix));
     matrix->N = N;
@@ -87,34 +80,53 @@ Matrix* load(float** new, const int N)
 ///////////////////////////
 
 
-Matrix* transpose(Matrix* A, int n, int N)
+float* transpose(float* A, int n, int N)
 {
-    if (A->N <= 32)
+    if (n <= 32)
     {
-        return naive_transpose(A);
+        return naive_transpose(A, n);
     }
     else 
     {
         int k = n / 2;
-
-        transpose(A, k, A->N);
-        transpose(A+k, k, A->N);
-        transpose(A + k * N, k, A->N);
+        transpose(A, k, N);
+        transpose(A + k, k, N);
+        transpose(A + k * N, k, N);
         transpose(A + k * N + k, k, N);
+
+
+        float temp;
+        for (int i = 0; i < k; i++)
+        {
+            for (int j = 0; j < k; j++)
+            {
+                temp = A[(i + k) * N + j];
+                A[(i + k) * N + j] = A[i * N + (j + k)];
+                A[i * N + (j + k)] = temp;               
+            }
+        }
+        if (n % 1){
+            for (int i = 0; i < n; i++)
+            {
+                temp = A[i * N + n - 1];
+                A[i * N + n - 1] = A[(n-1) * N + i];
+                A[(n-1) * N + i] = temp;
+            }
+        }
     }
     return A;
 }
 
-Matrix* naive_transpose(Matrix* A)
+float* naive_transpose(float* A, int N)
 {
     float temp;
-    for (int i = 0; i < A->N; i++)
+    for (int i = 0; i < N; i++)
     {
         for (int j = 0; j < i; j++)
         {
-            temp = A->entries[i][j];
-            A->entries[i][j] = A->entries[j][i];
-            A->entries[j][i] = temp;
+            temp = A[i * N + j];
+            A[i * N + j] = A[j * N + i];
+            A[j * N + i] = temp; 
         }
     }
     return A;
@@ -127,6 +139,7 @@ Matrix* naive_transpose(Matrix* A)
     {
         return NULL;
     }
+    int N = A->N;
     Matrix* C = create(A->N);
 
     for (int i = 0; i < C->N; i++)
@@ -135,7 +148,7 @@ Matrix* naive_transpose(Matrix* A)
         {
             for (int k = 0; k < C->N; k++)
             {
-                C->entries[j][i] += A->entries[j][k] * B->entries[k][i];
+                C->entries[j * N + i] += A->entries[j * N + k] * B->entries[k * N + i];
             }
         }
     }
@@ -145,12 +158,12 @@ Matrix* naive_transpose(Matrix* A)
 
  Matrix* matmul(Matrix* A, Matrix* B) 
  {
-    // TODO: CHANGE THIS TO EFFICIENT TRANSPOSE
-    B = naive_transpose(B);
+    B->entries = transpose(B->entries, B->N, B->N);
     if (A->N != B->N)
     {
         return NULL;
     }
+    int N = A->N;
     Matrix* C = create(A->N);
 
     for (int i = 0; i < C->N; i++)
@@ -159,7 +172,7 @@ Matrix* naive_transpose(Matrix* A)
         {
             for (int k = 0; k < C->N; k++)
             {
-                C->entries[j][i] += A->entries[j][k] * B->entries[i][k];
+                C->entries[j * N + i] += A->entries[j * N + k] * B->entries[i * N + k];
             }
         }
     }
@@ -174,8 +187,8 @@ Matrix* naive_transpose(Matrix* A)
     {
         for (int j = 0; j < A->N; j++)
         {
-            C->entries[i][j] = 
-            A->entries[i][j] * B;
+            C->entries[i * C->N + j] = 
+            A->entries[i * A->N + j] * B;
         }
     }
     return C;
@@ -185,13 +198,14 @@ Matrix* naive_transpose(Matrix* A)
  Matrix* matadd(Matrix* A, Matrix* B)
  {
     Matrix* C = create(A->N);
+    int N = A->N;
     for (int i = 0; i < A->N; i++)
     {
         for (int j = 0; j < A->N; j++)
         {
-            C->entries[i][j] = 
-            A->entries[i][j] + 
-            B->entries[i][j];
+            C->entries[i * N + j] = 
+            A->entries[i * N + j] + 
+            B->entries[i * N + j];
         }
     }
     return C;
@@ -205,8 +219,8 @@ Matrix* naive_transpose(Matrix* A)
     {
         for (int j = 0; j < A->N; j++)
         {
-            C->entries[i][j] = 
-            A->entries[i][j] + B;
+            C->entries[i * A->N + j] = 
+            A->entries[i * A->N + j] + B;
         }
     }
     return C;
@@ -222,7 +236,7 @@ int getn(Matrix* A)
 
 float at(Matrix* A, int i, int j)
 {
-    return A->entries[i][j] ;
+    return A->entries[i * A->N + j] ;
 }
 
 void set(Matrix* A, int i, int j, float val)
@@ -232,7 +246,7 @@ void set(Matrix* A, int i, int j, float val)
     {
         return;
     }
-    A->entries[i][j] = val;
+    A->entries[i * A->N + j] = val;
 }
 
  void print(Matrix* A)
@@ -242,7 +256,7 @@ void set(Matrix* A, int i, int j, float val)
     {
         for (int j = 0; j < A->N; j++)
         {
-            printf("%.2f ", A->entries[i][j]);
+            printf("%.2f ", A->entries[i * A->N + j]);
         }
         printf("\n");
     }

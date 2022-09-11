@@ -1,5 +1,5 @@
-CC = gcc
-CFLAGS = -Wall -g -O3
+CC = gcc-12
+CFLAGS = -Wall -g -O3 -ffast-math 
 
 all: mainapp
 

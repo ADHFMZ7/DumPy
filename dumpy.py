@@ -11,7 +11,7 @@ lib = CDLL('./matrix.so')
 class Matrix(Structure):
     _field_ = [
         ("N", c_int),
-        ("entries", POINTER(POINTER(c_float)))
+        ("entries", POINTER(c_float))
                ]
     
     def __repr__(self):
@@ -27,12 +27,12 @@ randmat = lib.randmat
 randmat.argtypes = [c_int]
 randmat.restype = POINTER(Matrix)
 
-eye = lib.eye
-eye.argtypes = [c_int]    
-eye.restype = POINTER(Matrix)
+_eye = lib.eye
+_eye.argtypes = [c_int]    
+_eye.restype = POINTER(Matrix)
 
 load = lib.load
-load.argtypes = [POINTER(POINTER(c_float))]
+load.argtypes = [POINTER(c_float)]
 load.restype = POINTER(Matrix)
 
 matmul = lib.matmul
@@ -166,6 +166,9 @@ def matrix(Mat):
     
 def rand(N):
     return matrix(randmat(N).contents)
+   
+def eye(N) :
+    return matrix(_eye(N).contents)
     
 if __name__ == '__main__': 
     # A = Matrix()
