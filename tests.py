@@ -49,8 +49,14 @@
 import dumpy as dp
 
 # creates two 100 x 100 sized matrices with random values
-A = dp.rand(100)
-B = dp.rand(100)
+A = dp.rand(4)
+B = dp.rand(4)
+
+print(A)
+
+print(B)
 
 # multiplies A and B and stores the value into C
 C = A @ B
+
+print(C)

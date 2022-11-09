@@ -20,7 +20,6 @@
 
 // TODO: 
 // 1) Implement blocking to speed up matrix operations
-// 2) Implement cache oblivious transpose
 
 /////////////////////////////
 ////    Constructors    ////
