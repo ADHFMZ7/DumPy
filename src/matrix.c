@@ -179,6 +179,14 @@ float* naive_transpose(float* A, int N)
  }
 
 
+Matrix* cache_matmul(Matrix* A, Matrix* B)
+{
+
+
+
+}
+
+
  Matrix* floatmul(Matrix* A, float B)
  {
     Matrix* C = create(A->N);
