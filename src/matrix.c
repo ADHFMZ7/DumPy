@@ -20,6 +20,9 @@
 
 // TODO: 
 // 1) Implement blocking to speed up matrix operations
+// 2) Free up memory after matrix goes out of scope
+// 3) Fix print bug
+
 
 /////////////////////////////
 ////    Constructors    ////
