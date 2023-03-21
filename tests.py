@@ -21,12 +21,12 @@ print(f"np time to create {SIZE ** 2} elements: {npend - npstart}")
 
 
 for i, row in enumerate(C):
- for j, val in enumerate(row):
-     A[i, j] = val
+    for j, val in enumerate(row):
+        A[i, j] = val
 
 for i, row in enumerate(D):
- for j, val in enumerate(row):
-     B[i, j] = val
+    for j, val in enumerate(row):
+        B[i, j] = val
 
 
 
@@ -39,7 +39,10 @@ print(f"np time to multiply: {npend - npstart}")
 dpstart = pf()
 F = A @ B
 dpend = pf()
-print(F, '\n')
+print(F)
+print('\n')
 
+print(F)
+print(F)
 print(F)
 print(f"dp time to multiply: {dpend - dpstart}")
